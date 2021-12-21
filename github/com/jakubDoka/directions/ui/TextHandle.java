@@ -78,17 +78,18 @@ public class TextHandle extends CanvasObject {
         g.setFont(this.font);
         switch (this.margin) {
             case BOTTOM_LEFT:
-                g.drawString(this.text, this.x, this.y);        
+                g.drawString(this.text, this.x, this.y); 
+                break;     
             case CENTER:
                 int width = g.getFontMetrics().stringWidth(this.text);
                 int height = g.getFontMetrics().getHeight() * this.lines;
-                g.drawString(this.text, this.x - width / 2, this.y - height / 2);
+                g.drawString(this.text, this.x - width / 2, this.y + height / 2 - g.getFontMetrics().getDescent());
         }
 
     }
 
     /**
-     * Determines hos the position data is used.
+     * Determines how the position data is used.
      */
     public enum Margin {
         CENTER,

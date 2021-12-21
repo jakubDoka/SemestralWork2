@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -20,6 +21,7 @@ public class Canvas extends JFrame implements KeyListener, MouseInputListener {
 
     private final Rect bounds;
     private final Rectangle tBounds;
+    private final Point mouse;
 
     
     private final ArrayList<CanvasObject> objects;
@@ -32,7 +34,7 @@ public class Canvas extends JFrame implements KeyListener, MouseInputListener {
     private final HashSet<Integer> mouseJustPressed;
     private final HashSet<Integer> mouseJustReleased;
 
-    public Canvas(String title, int width, int height, Color background) {
+    public Canvas(String title, int width, int height) {
         super(title);
         
         this.canvas = new java.awt.Canvas();
@@ -40,6 +42,7 @@ public class Canvas extends JFrame implements KeyListener, MouseInputListener {
         this.canvas.setFocusable(true);
         this.canvas.addKeyListener(this);
         this.canvas.addMouseListener(this);
+        this.canvas.addMouseMotionListener(this);
 
         this.add(this.canvas);
         this.pack();
@@ -48,7 +51,7 @@ public class Canvas extends JFrame implements KeyListener, MouseInputListener {
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        this.background = background;
+        this.background = Color.WHITE;
         
         this.objects = new ArrayList<CanvasObject>();
         
@@ -62,6 +65,7 @@ public class Canvas extends JFrame implements KeyListener, MouseInputListener {
 
         this.bounds = new Rect();
         this.tBounds = new Rectangle();
+        this.mouse = new Point();
     }
 
     public void update() {
@@ -104,6 +108,10 @@ public class Canvas extends JFrame implements KeyListener, MouseInputListener {
         g.dispose();
         bs.show();
     }
+
+    public void setBackground(Color background) {
+        this.background = background;
+    }
        
     public void erase(Graphics2D g) {
         g.setColor(this.background);
@@ -130,12 +138,21 @@ public class Canvas extends JFrame implements KeyListener, MouseInputListener {
         return this.justReleased.contains(keyCode);
     }
 
-    public boolean isMouseJustReleased(int button1) {
-        return this.mouseJustReleased.contains(button1);
+    public boolean isMouseJustReleased(int button) {
+        return this.mouseJustReleased.contains(button);
     }
 
-    public boolean isMouseJustPressed(int button1) {
-        return this.mouseJustPressed.contains(button1);
+    public boolean isMouseJustPressed(int button) {
+        return this.mouseJustPressed.contains(button);
+    }
+    
+    public boolean isMousePressed(int button1) {
+        return this.mousePressed.contains(button1);
+    }
+
+    public Point getMousePos(Point target) {
+        target.setLocation(this.mouse);
+        return target;
     }
     
     @Override
@@ -175,9 +192,13 @@ public class Canvas extends JFrame implements KeyListener, MouseInputListener {
     public void mouseExited(MouseEvent e) {}
 
     @Override
-    public void mouseDragged(MouseEvent e) {}
+    public void mouseDragged(MouseEvent e) {
+        this.mouse.setLocation(e.getPoint());
+    }
 
     @Override
-    public void mouseMoved(MouseEvent e) {}
+    public void mouseMoved(MouseEvent e) {
+        this.mouse.setLocation(e.getPoint());
+    }
 
 }

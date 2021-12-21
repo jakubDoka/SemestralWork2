@@ -4,14 +4,11 @@ import java.awt.Rectangle;
 
 import github.com.jakubDoka.directions.ui.CanvasObject;
 
-import java.awt.Color;
-
 public class Player extends CanvasObject {
     private final Rectangle drawer;
     //private final int size;
     
     public Player(int size) {
-        this.setColor(Color.BLUE);
         this.drawer = new Rectangle(
             Directions.HEIGHT / 2 - size, 
             Directions.WIDTH / 2 - size, 
@@ -23,6 +20,7 @@ public class Player extends CanvasObject {
 
     @Override
     public void drawImpl(Graphics2D g) {
+        g.setColor(this.getColor());
         g.fill(this.drawer);
     }
 }

@@ -59,10 +59,6 @@ public class Path extends CanvasObject {
     }
 
     public boolean move(Direction direction) {
-        if (this.getLost()) {
-            return false;
-        }
-
         Segment current = this.segments[this.current];
 
         if (current.getDirection() != direction) {
@@ -195,15 +191,6 @@ public class Path extends CanvasObject {
     }
 
     /**
-     * Returns whether game ended.
-     * This has to be checked before {@link #expand()} by user caller 
-     * To prevent index out of bounds exception.
-     */
-    public boolean getLost() {
-        return this.current < 0;
-    }
-
-    /**
      * Draws the path.
      */
     @Override
@@ -239,16 +226,38 @@ public class Path extends CanvasObject {
         }
     }
 
+    @Override
+    public void setColor(Color color) {
+        super.setColor(color);
+        
+        for (Segment segment : this.segments) {
+            segment.setColor(color);
+        }
+    }
+
+    public void restart() {
+        this.current = this.segments.length - 1;
+        this.temp.set(0, 0);
+        for(Segment segment : this.segments) {
+            segment.setPos(this.temp);
+        }
+    }
+
     /**
      * Segment glues up information to be stored in array.
      */
     public static class Segment {
         private final Vec pos;
+        
         private Direction direction;
-        private final int color;
+        private int color;
         
         public void setDirection(Path.Direction next_dir) {
             this.direction = next_dir;
+        }
+
+        public void setColor(Color color) {
+            this.color = color.getRGB();
         }
 
         /**
@@ -286,7 +295,7 @@ public class Path extends CanvasObject {
          * @param fade is assumed to be from 0 to 1.
          */
         public Color getColor(double fade) {
-            return Colors.create(Colors.lerp(this.color, 0, (int)(fade * 225)));
+            return Colors.create(Colors.lerp(this.color, this.color & 0x00FFFFFF, (int)(fade * 225)));
         }
     }
 
