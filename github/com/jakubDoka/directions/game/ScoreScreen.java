@@ -9,6 +9,13 @@ import github.com.jakubDoka.directions.ui.Colors;
 import github.com.jakubDoka.directions.ui.Panel;
 import github.com.jakubDoka.directions.ui.TextHandle;
 
+/**
+ * Score screen displays achieved score and also the best 
+ * score of all time for comparison. It also offers three buttons:
+ *  - Back to main menu
+ *  - Play again
+ *  - Exit
+ */
 public class ScoreScreen extends Panel {
     private final TextHandle scoreText;
     private final TextHandle bestScoreText;
@@ -16,6 +23,9 @@ public class ScoreScreen extends Panel {
     private final Button back;
     private final Button restart;
 
+    /**
+     * Creates new score screen. Initially hidden when added to canvas.
+     */
     public ScoreScreen() {
         super(new Rectangle(10, 10, Directions.WIDTH - 20, Directions.HEIGHT - 20), Colors.create(0x55FFFFFF));
 
@@ -65,12 +75,21 @@ public class ScoreScreen extends Panel {
         this.setVisible(false);
     }
 
+    /**
+     * Sets score to be displayed. and intractable by user.
+     * @param score - current score to display
+     * @param bestScore - best score to display
+     */
     public void start(int score, int bestScore) {
         this.bestScoreText.setText("BEST: " + bestScore);
         this.scoreText.setText(String.valueOf(score));
         this.setVisible(true);
     }
 
+    /**
+     * Makes score screen responsive to user input. Needs
+     * to be called every fame.
+     */
     public void update(Directions directions) {
         Canvas canvas = directions.getCanvas();
         if (this.rageQuit.pressed(canvas)) {

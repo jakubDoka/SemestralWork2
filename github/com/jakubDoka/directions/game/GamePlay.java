@@ -11,6 +11,10 @@ import github.com.jakubDoka.directions.ui.FrameManager;
 import github.com.jakubDoka.directions.ui.Panel;
 import github.com.jakubDoka.directions.ui.TextHandle;
 
+/**
+ * GamePlay manages the game state when player is actually playing the game.
+ * It contains the bail button Score display and counts the score.
+ */
 public class GamePlay extends Panel {
     private final Button end;
     private final TextHandle scoreText;
@@ -20,6 +24,10 @@ public class GamePlay extends Panel {
     private Player player;
     private int score;
 
+    /**
+     * Constructs the GamePlay object. It will be initially hidden after
+     * its added to canvas.
+     */
     public GamePlay() {
         super(new Rectangle(), new Color(0, true));
         
@@ -55,6 +63,9 @@ public class GamePlay extends Panel {
         super.drawImpl(g);
     }
 
+    /**
+     * Starts the game and allows player to make moves.
+     */
     public void start(Difficulty difficulty, Color playerColor, Color pathColor) {
         this.setVisible(true);
 
@@ -77,6 +88,11 @@ public class GamePlay extends Panel {
         }
     }
 
+    /**
+     * Makes game responsive to player input. Needs to be called every frame.
+     * Method can switch the state to score screen. Score determination is also 
+     * handled here.
+     */
     public void update(Directions directions) {
         Canvas canvas = directions.getCanvas();
         boolean success = true;
@@ -97,10 +113,12 @@ public class GamePlay extends Panel {
             this.setVisible(false);
             directions.showScore(this.score);
         } else if (moved) {
+            // faster you move more score you get per move, difficulty also multiplies 
+            // the score.
             double delta = this.frameManager.getDelta();
 
             int addition = (int)((1 - Math.min(Math.pow(delta, 1/30.0), 1)) * 1000) * 
-                (directions.getDifficulty().getIndex() + 1);
+                (directions.getDifficulty().ordinal() + 1);
 
             this.score += addition;
             this.scoreText.setText(String.valueOf(this.score));

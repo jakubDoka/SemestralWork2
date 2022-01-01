@@ -6,7 +6,11 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.util.Scanner;
 
-
+/**
+ * Data stores game data that has to be preserved 
+ * between application executions. It stores all data 
+ * in simple text format inside the users app-data directory.
+ */
 public class Data {
     private static final String FILE = Paths.get(
         System.getenv("LOCALAPPDATA"), "directions", "data.txt").toString();
@@ -18,6 +22,9 @@ public class Data {
     int pathColor;
     int playerColor;
     
+    /**
+     * Constructs data with default settings.
+     */
     public Data() {
         this.bestScore = 0;
         this.difficulty = Difficulty.EASY;
@@ -70,6 +77,9 @@ public class Data {
         this.playerColor = playerColor;
     }
 
+    /**
+     * Loads saved data and if non is found it saves the current one.
+     */
     public void load(Directions directions) {
         try {
             Scanner scanner = new Scanner(new File(FILE));
@@ -91,18 +101,25 @@ public class Data {
         }
     }
 
+    /**
+     * Saves current data to file in AppData directory.
+     */
     public void save() {
         try {
             File file = new File(FILE);
+            
+            // create if does not exists
             if (!file.exists()) {
                 file.getParentFile().mkdirs();
                 file.createNewFile();
             }
+
+            // write the data
             FileWriter writer = new FileWriter(file);
 
             writer.write(
                 this.bestScore + " " + 
-                this.difficulty.getIndex() + " " + 
+                this.difficulty.ordinal() + " " + 
                 this.backgroundColor + " " + 
                 this.pathColor + " " + 
                 this.playerColor

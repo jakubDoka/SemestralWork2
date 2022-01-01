@@ -5,11 +5,20 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+/**
+ * Panels role is to craw all its children on to oh himself.
+ * This allows some nice ui trees.
+ */
 public class Panel extends CanvasObject {
     private final Color color;
     private final Rectangle bounds;
     private final ArrayList<CanvasObject> items;
 
+    /**
+     * Creates a new panel instance. Panel is immutable.
+     * @param bounds - bounding box of the panel.
+     * @param color - color of the panel.
+     */
     public Panel(Rectangle bounds, Color color) {
         this.color = color;
         this.bounds = bounds;

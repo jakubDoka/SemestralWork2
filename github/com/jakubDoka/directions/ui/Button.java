@@ -24,6 +24,15 @@ public class Button extends CanvasObject {
 
     private boolean isPressed;
 
+    /**
+     * Creates a nes button instance that is immutable once created.
+     * @param idle - color of the button when it is not pressed.
+     * @param pressed - color of the button when it is pressed.
+     * @param font - font of the button text.
+     * @param fontColor - color of the button text.
+     * @param text - text of the button.
+     * @param bounds - bounding box of the button.
+     */
     public Button(Color idle, Color pressed, Font font, Color fontColor, String text, Rectangle bounds) {
         this.mouse = new Point();
         this.idle = idle;

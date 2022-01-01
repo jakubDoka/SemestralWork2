@@ -1,6 +1,10 @@
 package github.com.jakubDoka.directions.game;
 import java.lang.reflect.Array;
 
+/**
+ * Util is a stateless class that holds some utility methods. 
+ * All static.
+ */
 public class Util {
     /**
      * Sort sorts array by split-sort algorithm. 

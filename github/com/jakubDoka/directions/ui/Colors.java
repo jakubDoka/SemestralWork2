@@ -11,7 +11,7 @@ public class Colors {
     private static final ColorID access = new ColorID(0);
 
     /**
-     * Returns a color of the given value from pool of possible.
+     * Returns a color of the given value from pool if possible.
      * @param value
      * @return
      */

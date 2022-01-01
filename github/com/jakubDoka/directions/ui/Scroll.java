@@ -6,6 +6,10 @@ import java.awt.Rectangle;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
+/** 
+ * Scroll is horizontal scroll bar that allows user to choose certain 
+ * value from a range <0, 1>. 
+ */
 public class Scroll extends CanvasObject {
     private final Point mouse;
     private final Rectangle bounds;
@@ -16,6 +20,12 @@ public class Scroll extends CanvasObject {
     private int value;
     private boolean selected;
 
+    /**
+     * Creates a new scroll instance. Scroll is immutable.
+     * @param bounds - bounding box of the scroll.
+     * @param background - background color of the scroll. (unfilled area)
+     * @param foreground - foreground color of the scroll. (filled area)
+     */
     public Scroll(Rectangle bounds, Color background, Color foreground) {
         this.mouse = new Point();
         this.bounds = bounds;
@@ -34,6 +44,10 @@ public class Scroll extends CanvasObject {
         this.value = (int)(value * this.bounds.width);
     }
 
+    /**
+     * Makes the scroll responsive uo user input. Needs to be called every frame
+     * to feel natural.
+     */
     public boolean changed(Canvas canvas) {
         Point mouse = canvas.getMousePos(this.mouse);
 

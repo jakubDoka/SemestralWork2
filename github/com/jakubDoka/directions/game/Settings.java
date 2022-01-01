@@ -10,6 +10,9 @@ import github.com.jakubDoka.directions.ui.Panel;
 import github.com.jakubDoka.directions.ui.Scroll;
 import github.com.jakubDoka.directions.ui.Selection;
 
+/**
+ * Manages state of game settings screen.
+ */
 public class Settings extends Panel {
     private static final int PADDING = 10;
     private static final int PLAYER = 0;
@@ -24,6 +27,9 @@ public class Settings extends Panel {
     private final Scroll green;
     private final Scroll blue;
 
+    /**
+     * Creates new settings screen. Initially hidden when added to canvas.
+     */
     public Settings() {
         super(
             new Rectangle(
@@ -35,6 +41,7 @@ public class Settings extends Panel {
             Directions.UI_COLOR
         );
 
+        // Back button
         final int backButtonHeight = 50;
         final Rectangle backButtonRect = new Rectangle(
             PADDING * 2,
@@ -52,6 +59,7 @@ public class Settings extends Panel {
             backButtonRect
         );
 
+        // difficulty selection
         final Color nonSelectedDifficulty = Colors.create(0xFF777777);
         final int[] difficultyColors = {0xFF7aeb34, 0xFFe5eb34, 0xFFeb4034};
         final String[] difficultyNames = {"EASY", "MEDIUM", "HARD"};
@@ -79,6 +87,7 @@ public class Settings extends Panel {
             difficultyItems
         );
 
+        // panel with color picker
         final Rectangle colorPanelRect = new Rectangle(
             PADDING * 2,
             PADDING * 3 + difficultyHeight,
@@ -90,6 +99,7 @@ public class Settings extends Panel {
             Colors.create(0xFF666666)
         );
         
+        // the color picker target selection
         final String[] names = {"PLAYER", "PATH", "BACKGROUND"};
         final Selection.Item[] items = new Selection.Item[names.length];
         
@@ -113,6 +123,7 @@ public class Settings extends Panel {
         );
         this.colorSelection.setSelected(0);
 
+        // the color picker scrolls
         final Color[] colors = {Color.RED, Color.GREEN, Color.BLUE};
         final Scroll[] scrolls = new Scroll[colors.length];
         final int scrollHeight = 
@@ -148,6 +159,9 @@ public class Settings extends Panel {
         this.setVisible(false);
     }
 
+    /**
+     * Makes the settings screen visible and intractable.
+     */
     public void start(Directions directions) {
         this.setVisible(true);
         this.colorSelection.setColor(0, Colors.create(directions.getPlayerColor()));
@@ -156,6 +170,10 @@ public class Settings extends Panel {
         this.selectScrolls(this.colorSelection.getSelected(), directions);
     }
 
+    /**
+     * Makes the setting screen responsive to user input.
+     * Needs to be called every frame.
+     */
     public void update(Directions directions) {
         Canvas canvas = directions.getCanvas();
 
@@ -206,6 +224,11 @@ public class Settings extends Panel {
         }
     }
 
+    /**
+     * Readjusts the color scrolls to match selected item.
+     * @param selected - the selected item index (0-2)
+     * @param directions
+     */
     private void selectScrolls(int selected, Directions directions) {
         int color;
             

@@ -9,8 +9,9 @@ import github.com.jakubDoka.directions.ui.Canvas;
 import github.com.jakubDoka.directions.ui.Panel;
 
 /**
- * Class mainly for organization purposes, it holds the main menu 
- * interface and communicates with Directions.
+ * Main menu is the initial screen of the game. It appears the moment it is 
+ * added to canvas. Other then navigation ui, main menu runs the procedural 
+ * animation in background and calls thread sleep. 
  */
 public class MainMenu extends Panel {
     private final Button play;
@@ -19,6 +20,9 @@ public class MainMenu extends Panel {
 
     private final Path path;
 
+    /**
+     * Creates new main menu. Visible by default.
+     */
     public MainMenu() {
         super(
             new Rectangle(
@@ -69,7 +73,7 @@ public class MainMenu extends Panel {
     }
 
     /**
-     * Handles the button events and updates the background path.
+     * Makes main menu responsive to user input. Animates the background.
      */
     public void update(Directions directions) {
         Canvas canvas = directions.getCanvas();

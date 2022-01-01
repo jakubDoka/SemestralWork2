@@ -4,6 +4,10 @@ import java.awt.Graphics2D;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
+/**
+ * TextHandle offers object oriented interface to drawing text.
+ * It handles the text margin.
+ */
 public class TextHandle extends CanvasObject {
     /**
      * regex that matches the line ending
@@ -17,6 +21,13 @@ public class TextHandle extends CanvasObject {
     private Margin margin;
     private int lines;
 
+    /**
+     * Creates a new TextHandle instance.
+     * 
+     * @param font - font of the text.
+     * @param x - x coordinate of the text.
+     * @param y - y coordinate of the text.
+     */
     public TextHandle(Font font, int x, int y) {
         this.text = "";
         this.font = font;

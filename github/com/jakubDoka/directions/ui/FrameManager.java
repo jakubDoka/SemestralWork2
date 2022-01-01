@@ -2,6 +2,13 @@ package github.com.jakubDoka.directions.ui;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * Frame manager handles everything related to time. It can measure 
+ * timestamps in floating point seconds. Register tasks that should 
+ * be repeated in certain periods of time and also tween tools.
+ * 
+ * (Most of this garbage is not even used.)
+ */
 public class FrameManager {
     private static final long NANOS_IN_SECOND = 1_000_000_000;
 
@@ -13,6 +20,9 @@ public class FrameManager {
 
     private final ArrayList<ITask> tasks = new ArrayList<>();
 
+    /**
+     * Creates new frame manager that is up to date.
+     */
     public FrameManager() {
         this.last = System.nanoTime();
         this.time = 0d;
@@ -21,6 +31,11 @@ public class FrameManager {
         this.frameRate = 0;
     }
 
+    /**
+     * Updates the delta time since last update, performs tasks and 
+     * runs tween if possible. Needs to be called every frame for higher 
+     * accuracy of task execution. 
+     */
     public void update() {
         long now = System.nanoTime();
         long elapsed = now - this.last;
@@ -39,10 +54,17 @@ public class FrameManager {
         this.doTasks();
     }
 
+    /**
+     * Registers a task.
+     */
     public void addTask(ITask task) {
         this.tasks.add(task);
     }
 
+    /**
+     * Updates and performs tasks if possible.
+     * Done tasks are discarded.
+     */
     private void doTasks() {
         Iterator<ITask> iter = this.tasks.iterator();
         while (iter.hasNext()) {
@@ -65,11 +87,20 @@ public class FrameManager {
         this.delta = delta;
     }
 
+    /**
+     * Tween is specialized task that reports linear progress to 
+     * its target every fame.
+     */
     public static class Tween implements ITask {
         private double duration;
         private double progress;
         private ITweenTarget target;
 
+        /**
+         * Creates new tween.
+         * @param duration - duration of tween in seconds
+         * @param target - target object that will receive progress
+         */
         public Tween(double duration, ITweenTarget target) {
             this.duration = duration;
             this.target = target;
@@ -88,10 +119,17 @@ public class FrameManager {
         }
     }
 
+    /**
+     * Interface for objects that can be tweened.
+     */
     public interface ITweenTarget {
         boolean progress(double progress);
     }
 
+    /**
+     * Timer is specialized task for executing repeated or one-time
+     * Runnables.
+     */
     public static class Timer implements ITask {
         private boolean repeat;
         private boolean killed;
@@ -135,6 +173,11 @@ public class FrameManager {
         }
     }
 
+    /**
+     * Interface for objects that can be passed to manager.
+     * Tick is called every frame manager update and it contains the 
+     * delta time from last tick.
+     */
     public interface ITask {
         boolean tick(double delta);
     }

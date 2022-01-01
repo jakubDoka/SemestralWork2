@@ -346,8 +346,6 @@ public class Path extends CanvasObject {
     public enum Direction {
         UP, LEFT, DOWN, RIGHT;
 
-        private static int counter;
-
         /**
          * Returns vector direction, assuming vector is always axis aligned.
          * @param step - vector to infer direction from.

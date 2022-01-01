@@ -15,11 +15,17 @@ import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+/**
+ * Canvas handles a drawing of canvas objects, once object is added 
+ * it is drawn in that order, to push any object higher you have to 
+ * reinsert the object.
+ * 
+ * Canvas also manages key and mouse events.
+ */
 public class Canvas extends JFrame implements KeyListener, MouseInputListener {
     private final java.awt.Canvas canvas;
     private Color background;
 
-    private final Rect bounds;
     private final Rectangle tBounds;
     private final Point mouse;
 
@@ -34,6 +40,12 @@ public class Canvas extends JFrame implements KeyListener, MouseInputListener {
     private final HashSet<Integer> mouseJustPressed;
     private final HashSet<Integer> mouseJustReleased;
 
+    /**
+     * Creates a new canvas instance.
+     * @param title - title of the window.
+     * @param width - width of the window.
+     * @param height - height of the window.
+     */
     public Canvas(String title, int width, int height) {
         super(title);
         
@@ -63,16 +75,23 @@ public class Canvas extends JFrame implements KeyListener, MouseInputListener {
         this.mouseJustPressed = new HashSet<>();
         this.mouseJustReleased = new HashSet<>();
 
-        this.bounds = new Rect();
         this.tBounds = new Rectangle();
         this.mouse = new Point();
     }
 
+    /**
+     * Makes canvas responsive to input and redraw objects. 
+     * Needs to be called every frame.
+     */
     public void update() {
         this.updateInput();
         this.redraw();
     }
 
+    /**
+     * Updates the key and mouse sets. Needs to be called every frame to
+     * properly detect all events. 
+     */
     public void updateInput() {
         this.justPressed.clear();
         this.justReleased.clear();
@@ -80,14 +99,23 @@ public class Canvas extends JFrame implements KeyListener, MouseInputListener {
         this.mouseJustReleased.clear();
     }
 
+    /**
+     * Adds object to drawing cycle.
+     */
     public void addObject(CanvasObject canvasObject) {
         this.objects.add(canvasObject);
     }
 
+    /**
+     * Removes object from drawing cycle.
+     */
     public void removeObject(CanvasObject canvasObject) {
         this.objects.remove(canvasObject);
     }
 
+    /**
+     * Redraws all objects. 
+     */
     public void redraw() {
         BufferStrategy bs = this.canvas.getBufferStrategy();
         
@@ -100,7 +128,7 @@ public class Canvas extends JFrame implements KeyListener, MouseInputListener {
 
         this.erase(g);
 
-        Rect b = this.getRect();
+        Rectangle b = this.getRectangle();
         for (CanvasObject c : this.objects) {
             c.draw(g, b);
         }
@@ -112,44 +140,64 @@ public class Canvas extends JFrame implements KeyListener, MouseInputListener {
     public void setBackground(Color background) {
         this.background = background;
     }
-       
+    
+    /**
+     * Leaves just solid background color visible on screen.
+     */
     public void erase(Graphics2D g) {
         g.setColor(this.background);
-        g.fill(this.getTBounds());
+        g.fill(this.getRectangle());
     }
 
-    public Rect getRect() {
-        return this.bounds.set(this.getTBounds());
-    }
-    
-    public Rectangle getTBounds() {
+    public Rectangle getRectangle() {
         return this.canvas.getBounds(this.tBounds);
     }
-
+    
+    /**
+     * Returns true if key is pressed.
+     */
     public boolean isPressed(int keyCode) {
         return this.pressed.contains(keyCode);
     }
 
+    /**
+     * Returns true if key was just pressed.
+     */
     public boolean isJustPressed(int keyCode) {
         return this.justPressed.contains(keyCode);
     }
     
+    /**
+     * Returns true if key was just released.
+     */
     public boolean isJustReleased(int keyCode) {
         return this.justReleased.contains(keyCode);
     }
 
+    /**
+     * Returns true if mouse button is pressed.
+     */
     public boolean isMouseJustReleased(int button) {
         return this.mouseJustReleased.contains(button);
     }
 
+    /**
+     * Returns true if mouse button was just pressed.
+     */
     public boolean isMouseJustPressed(int button) {
         return this.mouseJustPressed.contains(button);
     }
     
+    /**
+     * Returns true if mouse button is pressed.
+     */
     public boolean isMousePressed(int button1) {
         return this.mousePressed.contains(button1);
     }
 
+    /**
+     * Returns true if mouse button was just released.
+     */
     public Point getMousePos(Point target) {
         target.setLocation(this.mouse);
         return target;
@@ -200,5 +248,4 @@ public class Canvas extends JFrame implements KeyListener, MouseInputListener {
     public void mouseMoved(MouseEvent e) {
         this.mouse.setLocation(e.getPoint());
     }
-
 }
