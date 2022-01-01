@@ -81,12 +81,11 @@ public class Path extends CanvasObject {
      * @param direction - direction player intends to move
      * @return - is move was successful
      */
-    public boolean move(Direction direction) {
+    public Vec move(Direction direction) {
         Segment current = this.segments[this.current];
 
         if (current.getDirection() != direction) {
-            this.expand();
-            return false;
+            return null;
         }
         
         this.current++;
@@ -94,10 +93,8 @@ public class Path extends CanvasObject {
         this.expand();
 
         Vec shift = current.getPos(this.temp2).sub(this.segments[this.current].getPos(this.temp));
-
-        this.shift(shift.getX(), shift.getY());
-
-        return true;
+        
+        return shift;
     }
 
     /**
@@ -223,16 +220,8 @@ public class Path extends CanvasObject {
      */
     @Override
     public void drawImpl(Graphics2D g) {
-        // draw segment centers
-        for (Segment segment : this.segments) {
-            g.setColor(segment.getColor(0));
-            this.drawer.setSize(this.size * 2, this.size * 2);
-            this.drawer.setLocation(
-                (int)segment.getPos(this.temp).getX() - this.size, 
-                (int)segment.getPos(this.temp).getY() - this.size
-            );
-            g.fill(this.drawer);
-        }
+        
+
         
         // connect segment connections
         for (int i = 0; i < this.segments.length - 1; i++) {
@@ -252,6 +241,22 @@ public class Path extends CanvasObject {
             g.setColor(a.getColor(1 - (double)i / this.segments.length));
             g.fill(this.drawer);
         }
+
+        // draw segment centers
+        for (Segment segment : this.segments) {
+            if (segment == this.segments[this.segments.length - 1]) {
+                g.setColor(Color.GREEN);
+            } else {
+                g.setColor(segment.getColor(0));
+            }
+            this.drawer.setSize(this.size * 2, this.size * 2);
+            this.drawer.setLocation(
+                (int)segment.getPos(this.temp).getX() - this.size, 
+                (int)segment.getPos(this.temp).getY() - this.size
+            );
+            g.fill(this.drawer);
+        }
+
     }
 
     /**
@@ -276,6 +281,13 @@ public class Path extends CanvasObject {
             segment.setPos(this.temp);
         }
     }
+
+    /**
+     * Returns the correct direction player should move.
+     */
+    public Direction getCorrectDirection() {
+		return this.segments[this.current].getDirection();
+	}
 
     /**
      * Segment glues up information to be stored in array.
@@ -369,5 +381,5 @@ public class Path extends CanvasObject {
         public boolean horizontal() {
             return this.ordinal() % 2 == 1;
         }
-    }
+    }	
 }

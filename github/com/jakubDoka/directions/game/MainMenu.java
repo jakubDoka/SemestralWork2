@@ -16,6 +16,7 @@ import github.com.jakubDoka.directions.ui.Panel;
 public class MainMenu extends Panel {
     private final Button play;
     private final Button settings;
+    private final Button tutorial;
     private final Button exit;
 
     private final Path path;
@@ -37,12 +38,14 @@ public class MainMenu extends Panel {
         this.path = new Path(100, 6, Directions.WIDTH / 2, Directions.HEIGHT / 2);
 
         final int padding = 10;
+        
+
+        final String[] names = {"PLAY", "SETTINGS", "TUTORIAL", "EXIT"};
+
         final int width = Directions.WIDTH / 2 - padding * 2;
-        final int height = (Directions.HEIGHT / 2 - padding * 4) / 3;
+        final int height = (Directions.HEIGHT / 2 - padding * (names.length + 1)) / names.length;
 
-        final String[] names = {"PLAY", "SETTINGS", "EXIT"};
-
-        final Button[] buttons = new Button[3];
+        final Button[] buttons = new Button[names.length];
 
         for (int i = 0; i < buttons.length; i++) {
             buttons[i] = new Button(
@@ -63,7 +66,9 @@ public class MainMenu extends Panel {
 
         this.play = buttons[0];
         this.settings = buttons[1];
-        this.exit = buttons[2];            
+        this.tutorial = buttons[2];
+        this.exit = buttons[3]; 
+
     }
 
     @Override
@@ -78,9 +83,11 @@ public class MainMenu extends Panel {
     public void update(Directions directions) {
         Canvas canvas = directions.getCanvas();
         if (this.play.pressed(canvas)) {
-            directions.startGame();
+            directions.startGame(false);
         } else if (this.settings.pressed(canvas)) {
             directions.showSettings();
+        } else if (this.tutorial.pressed(canvas)) {
+            directions.startGame(true);
         } else if (this.exit.pressed(canvas)) {
             System.exit(0);
         }

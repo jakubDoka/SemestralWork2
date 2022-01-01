@@ -2,7 +2,6 @@ package github.com.jakubDoka.directions.ui;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 
 /**
  * TextHandle offers object oriented interface to drawing text.
@@ -19,7 +18,6 @@ public class TextHandle extends CanvasObject {
     private int x;
     private int y;
     private Margin margin;
-    private int lines;
 
     /**
      * Creates a new TextHandle instance.
@@ -34,7 +32,6 @@ public class TextHandle extends CanvasObject {
         this.x = x;
         this.y = y;
         this.margin = Margin.BOTTOM_LEFT;
-        this.lines = 1;
     }
     
 
@@ -42,18 +39,8 @@ public class TextHandle extends CanvasObject {
         this.margin = margin;
     }
 
-    /**
-     * Sets text and determines number of lines
-     * @param text
-     */
     public void setText(String text) {
         this.text = text;
-        this.lines = 1;
-        
-        Matcher mather = pattern.matcher(text);
-        while (mather.find()) {
-            this.lines++;
-        }
     }
     
     public void setFont(Font font) {
@@ -87,16 +74,30 @@ public class TextHandle extends CanvasObject {
     @Override
     public void drawImpl(Graphics2D g) {
         g.setFont(this.font);
+        int x = 0;
+        int y = 0;
         switch (this.margin) {
             case BOTTOM_LEFT:
-                g.drawString(this.text, this.x, this.y); 
+                x = this.x;
+                y = this.y;
                 break;     
             case CENTER:
-                int width = g.getFontMetrics().stringWidth(this.text);
-                int height = g.getFontMetrics().getHeight() * this.lines;
-                g.drawString(this.text, this.x - width / 2, this.y + height / 2 - g.getFontMetrics().getDescent());
+                int width = 0;
+                int lines = 0;
+                for (String line : pattern.split(this.text)) {
+                    width = Math.max(width, g.getFontMetrics().stringWidth(line));
+                    lines++;
+                }
+                int height = g.getFontMetrics().getHeight() * lines;
+                x = this.x - width / 2;
+                y = this.y + height / 2 - g.getFontMetrics().getDescent();
         }
 
+        int currentLine = 0;
+        for (String line : pattern.split(this.text)) {
+            g.drawString(line, x, y + currentLine * g.getFontMetrics().getHeight());
+            currentLine++;
+        }
     }
 
     /**

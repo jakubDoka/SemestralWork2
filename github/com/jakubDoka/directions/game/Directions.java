@@ -69,8 +69,15 @@ public class Directions implements Runnable {
         }
     }
 
-    public void startGame() {
+    /**
+     * Starts the game and lets player make his moves.
+     * If this is tutorial mode, no score is increased 
+     * and player cant lose.
+     * @param isTutorial - if true, game is in tutorial mode
+     */
+    public void startGame(boolean isTutorial) {
         this.gamePlay.start(
+            isTutorial,    
             this.data.getDifficulty(),
             Colors.create(this.data.getPlayerColor()),
             Colors.create(this.data.getPathColor())

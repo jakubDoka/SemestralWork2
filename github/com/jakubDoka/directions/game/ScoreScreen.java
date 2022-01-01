@@ -99,7 +99,7 @@ public class ScoreScreen extends Panel {
             directions.showMainMenu();
         } else if (this.restart.pressed(canvas)) {
             this.setVisible(false);
-            directions.startGame();
+            directions.startGame(false);
         }
     }
 }

@@ -3,26 +3,60 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import github.com.jakubDoka.directions.ui.CanvasObject;
+import github.com.jakubDoka.directions.ui.Vec;
 
 /**
  * Player is merely draws it self on the screen.
  * Its isolated class to make things more organized.
  */
 public class Player extends CanvasObject {
-    private final Rectangle drawer;
+    private static final double MARGIN = 0.25; 
     
+    private final Vec temp;
+    private final Rectangle drawer;
+
+    private final Vec position;
+
     /**
      * Player can be added to canvas and it will appear in the 
      * middle of the screen.
      * @param size - size of the rectangle, it acts more like an radius of a square.
      */
     public Player(int size) {
+        this.temp = new Vec();
+        this.position = new Vec(Directions.WIDTH / 2 - size, Directions.HEIGHT / 2 - size);
         this.drawer = new Rectangle(
-            Directions.HEIGHT / 2 - size, 
-            Directions.WIDTH / 2 - size, 
+            0, 
+            0, 
             size * 2, 
             size * 2
         );
+    }
+
+    /**
+     * Move moves the player by vec.
+     * @param shift - the shift
+     */
+    public Vec move(Vec shift) {
+        Vec nextPosition = this.temp.set(this.position).sub(shift);
+        double realMoveX = Math.min(
+            Math.max(
+                nextPosition.getX(), 
+                Directions.WIDTH * MARGIN
+            ), 
+            Directions.WIDTH - Directions.WIDTH * MARGIN
+        );
+        double realMoveY = Math.min(
+            Math.max(
+                nextPosition.getY(), 
+                Directions.HEIGHT * MARGIN
+            ), 
+            Directions.HEIGHT - Directions.HEIGHT * MARGIN
+        );
+        this.position.set(realMoveX, realMoveY);
+        this.temp.sub(this.position);
+
+        return this.temp;
     }
 
     /**
@@ -30,6 +64,7 @@ public class Player extends CanvasObject {
      */
     @Override
     public void drawImpl(Graphics2D g) {
+        this.drawer.setLocation((int)this.position.getX(), (int)this.position.getY());
         g.setColor(this.getColor());
         g.fill(this.drawer);
     }
