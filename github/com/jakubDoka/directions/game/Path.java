@@ -14,7 +14,6 @@ import github.com.jakubDoka.directions.ui.Vec;
  * game-play. It has to be always obvious where the path is heading.
  */
 public class Path extends CanvasObject {
-    
     private final Random random;
     private final Rectangle drawer;
     private final Vec temp;
@@ -25,6 +24,14 @@ public class Path extends CanvasObject {
     private final int size;
     private final double[] possibilities;
 
+    /**
+     * Creates a path that will appear as a square at the given x and y.
+     * @param x - x coordinate of the initial square.
+     * @param y - y coordinate of the initial square.
+     * @param length - amount of segments path will have.
+     * @param size - size of the path, multiplicate of the value are used to display 
+     * path segments.
+     */
     public Path(int length, int size, double x, double y) {
         this.random = new Random();
         this.drawer = new Rectangle();
@@ -43,6 +50,9 @@ public class Path extends CanvasObject {
         this.possibilities = new double[length + 1];
     }
 
+    /**
+     * moves last segment to the first position in the array
+     */
     public void makeLastFirst() {
         Segment last = this.segments[0];
         for(int i = 1; i < this.segments.length; i++) {
@@ -51,6 +61,12 @@ public class Path extends CanvasObject {
         this.segments[this.segments.length - 1] = last;
     }
 
+    /**
+     * Shifts all segment positions by a given amount.
+     * 
+     * @param x - amount of x shift
+     * @param y - amount of y shift
+     */
     public void shift(double x, double y) {
         this.temp.set(x, y);
         for(Segment segment : this.segments) {
@@ -58,6 +74,13 @@ public class Path extends CanvasObject {
         }
     }
 
+    /**
+     * Move expands the path or returns false, path is also shifted so that 
+     * it looks like player moved.
+     *  
+     * @param direction - direction player intends to move
+     * @return - is move was successful
+     */
     public boolean move(Direction direction) {
         Segment current = this.segments[this.current];
 
@@ -77,6 +100,10 @@ public class Path extends CanvasObject {
         return true;
     }
 
+    /**
+     * Expands the path in random direction. Directions is 
+     * always colinear to current direction.
+     */
     public void expand() {
         Direction direction = this.segments[this.segments.length - 2].getDirection();;
         Segment current = this.segments[this.segments.length - 1];
@@ -95,9 +122,10 @@ public class Path extends CanvasObject {
 
     /**
      * Returns best possible step so that the path does not overlap weirdly.
+     * This means player can always know where to move.
      * 
-     * @param direction
-     * @return
+     * @param direction - direction in which step should be
+     * @return - next position relative to current position
      */
     public Vec getStep(Direction direction, Vec currentPos) {
         // creating the vector mapping
@@ -206,7 +234,7 @@ public class Path extends CanvasObject {
             g.fill(this.drawer);
         }
         
-        // connect segments
+        // connect segment connections
         for (int i = 0; i < this.segments.length - 1; i++) {
             Segment a = this.segments[i];
             Segment b = this.segments[i + 1];
@@ -226,6 +254,9 @@ public class Path extends CanvasObject {
         }
     }
 
+    /**
+     * setColor extended to affect all owned segments
+     */
     @Override
     public void setColor(Color color) {
         super.setColor(color);
@@ -235,6 +266,9 @@ public class Path extends CanvasObject {
         }
     }
 
+    /**
+     * Restarts the state of path.
+     */
     public void restart() {
         this.current = this.segments.length - 1;
         this.temp.set(0, 0);
@@ -270,6 +304,12 @@ public class Path extends CanvasObject {
             this.direction = Direction.UP;
         }
 
+        /**
+         * Sets the position of the segment.
+         * @param pos - position that gets set, can be null 
+         * to create nw vector.
+         * @return - target argument passed as return value.
+         */
         public Vec getPos(Vec target) {
             if (target == null) {
                 target = new Vec();
@@ -299,25 +339,19 @@ public class Path extends CanvasObject {
         }
     }
 
+    /**
+     * Enum for direction of segment.
+     * It also stores index information. 
+     */
     public enum Direction {
         UP, LEFT, DOWN, RIGHT;
 
         private static int counter;
-        private final int index;
-
-        /**
-         * Returns internal index counter and increments it.
-         * This is only used in constructor to determinate indexes.
-         * @return
-         */
-        private static int next() {
-            return counter++;
-        }
 
         /**
          * Returns vector direction, assuming vector is always axis aligned.
-         * @param step
-         * @return
+         * @param step - vector to infer direction from.
+         * @return - direction of vector.
          */
         public static Direction of(Vec step) {
             if (step.getX() > 0) {
@@ -335,21 +369,7 @@ public class Path extends CanvasObject {
          * Returns whether direction is horizontal.
          */
         public boolean horizontal() {
-            return this.index % 2 == 1;
-        }
-
-        /**
-         * Constructs direction with appropriate index
-         */
-        private Direction() {
-            this.index = Direction.next();
-        }
-
-        /**
-         * Returns index of direction.
-         */
-        public int getIndex() {
-            return this.index;
+            return this.ordinal() % 2 == 1;
         }
     }
 }

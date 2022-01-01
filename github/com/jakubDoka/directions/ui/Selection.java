@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.Point;
+import java.awt.Font;
 
 public class Selection extends CanvasObject {
     private final Point mouse;
@@ -16,12 +17,12 @@ public class Selection extends CanvasObject {
 
     private int selected;
 
-    public Selection(Rectangle bounds, Item... items) {
+    public Selection(Rectangle bounds, Font font, Item... items) {
         this.mouse = new Point();
         this.items = items;
         this.bounds = bounds;
         this.drawer = new Rectangle();
-        this.text = new TextHandle(Button.FONT, 0, 0);
+        this.text = new TextHandle(font, 0, 0);
         this.text.setMargin(TextHandle.Margin.CENTER);
     }
     

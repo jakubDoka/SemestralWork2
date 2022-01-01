@@ -16,8 +16,9 @@ public class FrameManager {
     public FrameManager() {
         this.last = System.nanoTime();
         this.time = 0d;
-        this.frameRate = 0;
+        this.delta = 0d;
         this.counter = 0;
+        this.frameRate = 0;
     }
 
     public void update() {
@@ -58,6 +59,10 @@ public class FrameManager {
 
     public double getDelta() {
         return this.delta;
+    }
+
+    public void setDelta(double delta) {
+        this.delta = delta;
     }
 
     public static class Tween implements ITask {

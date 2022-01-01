@@ -15,8 +15,6 @@ import github.com.jakubDoka.directions.ui.TextHandle.Margin;
  * trough {@link #pressed()} method.
  */
 public class Button extends CanvasObject {
-    public static final Font FONT = new Font("Monospaced", Font.BOLD, 30);
-
     private final Point mouse;
     private final Color idle;
     private final Color pressed;
@@ -26,14 +24,14 @@ public class Button extends CanvasObject {
 
     private boolean isPressed;
 
-    public Button(Color idle, Color pressed, Color fontColor, String text, Rectangle bounds) {
+    public Button(Color idle, Color pressed, Font font, Color fontColor, String text, Rectangle bounds) {
         this.mouse = new Point();
         this.idle = idle;
         this.pressed = pressed;
         this.fontColor = fontColor;
         this.isPressed = false;
         
-        this.text = new TextHandle(Button.FONT, (int)bounds.getCenterX(), (int)bounds.getCenterY());
+        this.text = new TextHandle(font, (int)bounds.getCenterX(), (int)bounds.getCenterY());
         this.text.setText(text);
         this.text.setMargin(Margin.CENTER);
 

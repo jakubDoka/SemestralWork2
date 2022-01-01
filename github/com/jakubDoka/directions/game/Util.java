@@ -20,8 +20,8 @@ public class Util {
         // managed to allocate just one array of equal size
         T[] temp = (T[]) Array.newInstance(array[0].getClass(), array.length); 
         int stride = 2;
-        while (stride >> 1 < array.length) {
-            int halfStride = stride >> 1;
+        while (stride / 2 < array.length) {
+            int halfStride = stride / 2;
             for (int i = 0; i < array.length; i += stride) {
                 int cursor = i;
                 int a = i;
@@ -41,7 +41,7 @@ public class Util {
             array = temp;
             temp = swap;
 
-            stride <<= 1;
+            stride *= 2;
         }
 
         if (array != original) {
