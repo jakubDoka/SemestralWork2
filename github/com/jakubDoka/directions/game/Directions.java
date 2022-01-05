@@ -103,20 +103,55 @@ public class Directions implements Runnable {
         this.state = State.MAIN_MENU;
     }
 
+    /**
+     * Restarts the game configuration to defaults.
+     */
+    public void resetData() {
+        Data cleanData = new Data();
+        this.setDifficulty(Difficulty.EASY);
+        this.setPathColor(cleanData.getPathColor());
+        this.setBackgroundColor(cleanData.getBackgroundColor());
+        this.setPlayerColor(cleanData.getPlayerColor());
+    }
+
+    /**
+     * Sets path color and makes sure everything changes properly.
+     * @param colorValue
+     */
     public void setPathColor(int colorValue) {
         Color color = Colors.create(colorValue);
         this.mainMenu.setPathColor(color);
         this.data.setPathColor(colorValue);
+        this.settings.setPathColor(color);
     }
 
+    /**
+     * Sets background color and makes sure everything changes properly.
+     * @param colorValue
+     */
     public void setBackgroundColor(int colorValue) {
         this.canvas.setBackground(Colors.create(colorValue));
         this.data.setBackgroundColor(colorValue);
     }
 
+    /**
+     * Sets player color and makes sure everything changes properly.
+     * @param colorValue
+     */
     public void setPlayerColor(int colorValue) {
-        this.gamePlay.setColor(Colors.create(colorValue));
+        Color color = Colors.create(colorValue);
+        this.gamePlay.setColor(color);
         this.data.setPlayerColor(colorValue);
+        this.settings.setPlayerColor(color);
+    }
+
+    /**
+     * Sets difficulty color and makes sure everything changes properly.
+     * @param colorValue
+     */
+    public void setDifficulty(Difficulty difficulty) {
+        this.data.setDifficulty(difficulty);
+        this.settings.setDifficulty(this);
     }
 
     /**
@@ -143,11 +178,6 @@ public class Directions implements Runnable {
     
     public int getBackgroundColor() {
         return this.data.getBackgroundColor();
-    }
-    
-    public void setDifficulty(Difficulty difficulty) {
-        this.data.setDifficulty(difficulty);
-        this.settings.setDifficulty(difficulty);
     }
     
     public void saveData() {

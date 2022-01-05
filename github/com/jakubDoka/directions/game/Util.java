@@ -22,7 +22,7 @@ public class Util {
             return;
         }
         // managed to allocate just one array of equal size
-        T[] temp = (T[]) Array.newInstance(array[0].getClass(), array.length); 
+        T[] temp = (T[])Array.newInstance(array[0].getClass(), array.length); 
         int stride = 2;
         while (stride / 2 < array.length) {
             int halfStride = stride / 2;

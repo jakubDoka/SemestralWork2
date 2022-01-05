@@ -216,7 +216,9 @@ public class Canvas extends JFrame implements KeyListener, MouseInputListener {
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {}
+    public void keyTyped(KeyEvent e) {
+        
+    }
     
     @Override
     public void mousePressed(MouseEvent e) {
@@ -231,13 +233,19 @@ public class Canvas extends JFrame implements KeyListener, MouseInputListener {
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {}
+    public void mouseClicked(MouseEvent e) {
+
+    }
 
     @Override
-    public void mouseEntered(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {
+
+    }
 
     @Override
-    public void mouseExited(MouseEvent e) {}
+    public void mouseExited(MouseEvent e) {
+
+    }
 
     @Override
     public void mouseDragged(MouseEvent e) {

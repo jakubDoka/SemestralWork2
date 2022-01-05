@@ -40,7 +40,7 @@ public class Selection extends CanvasObject {
     @Override
     public void drawImpl(Graphics2D g) {
         
-        for(int i = 0; i < this.items.length; i++) {
+        for (int i = 0; i < this.items.length; i++) {
             this.setBounds(i);
             g.setColor(this.items[i].getColor());
             g.fill(this.drawer);
@@ -63,7 +63,7 @@ public class Selection extends CanvasObject {
     public void setSelected(int selected) {
         this.selected = selected;
 
-        for(Item i : this.items) {
+        for (Item i : this.items) {
             i.deselect();
         }
 
@@ -85,15 +85,15 @@ public class Selection extends CanvasObject {
      * @return - -1 if selection did not change otherwise the index of selection
      */
     public int changed(Canvas canvas) {
-        Point mouse = canvas.getMousePos(this.mouse);
-        for(int i = 0; i < this.items.length; i++) {
+        Point localMouse = canvas.getMousePos(this.mouse);
+        for (int i = 0; i < this.items.length; i++) {
             this.setBounds(i);
-            if(
-                this.drawer.contains(mouse) && 
+            if (
+                this.drawer.contains(localMouse) && 
                 canvas.isMouseJustPressed(MouseEvent.BUTTON1) && 
-                this.selected != i
+                    this.selected != i
             ) {
-                for(Item item : this.items) {
+                for (Item item : this.items) {
                     item.deselect();
                 }
 
@@ -151,11 +151,11 @@ public class Selection extends CanvasObject {
         }
 
         public String getText() {
-            return text;
+            return this.text;
         }
 
         public Color getColor() {
-            return selected ? selection : idle;
+            return this.selected ? this.selection : this.idle;
         }
 
         public void setColor(Color color) {

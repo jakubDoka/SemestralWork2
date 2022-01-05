@@ -49,16 +49,16 @@ public class Scroll extends CanvasObject {
      * to feel natural.
      */
     public boolean changed(Canvas canvas) {
-        Point mouse = canvas.getMousePos(this.mouse);
+        Point localMouse = canvas.getMousePos(this.mouse);
 
         if (
-            (this.selected || this.bounds.contains(mouse)) &&
+            (this.selected || this.bounds.contains(localMouse)) &&
             canvas.isMousePressed(MouseEvent.BUTTON1)
         ) {
             this.selected = true;
-            int value = Math.min(Math.max(mouse.x - this.bounds.x, 0), this.bounds.width); 
-            if (value != this.value) {
-                this.value = value;
+            int localValue = Math.min(Math.max(localMouse.x - this.bounds.x, 0), this.bounds.width); 
+            if (localValue != this.value) {
+                this.value = localValue;
                 return true;
             }
             return false;

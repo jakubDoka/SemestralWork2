@@ -48,7 +48,7 @@ public class ScoreScreen extends Panel {
         final int buttonWidth = (buttonRect.width - padding * 2) / buttonNames.length;
 
         final Button[] buttons = new Button[buttonNames.length];
-        for(int i = 0; i < buttons.length; i++) {
+        for (int i = 0; i < buttons.length; i++) {
             buttons[i] = new Button(
                 Color.GRAY,
                 Color.DARK_GRAY,

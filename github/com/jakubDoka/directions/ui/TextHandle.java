@@ -11,7 +11,7 @@ public class TextHandle extends CanvasObject {
     /**
      * regex that matches the line ending
      */
-    private static final Pattern pattern = Pattern.compile("(\n\r|\n|\r)");
+    private static final Pattern NLINE_PATTERN = Pattern.compile("(\n\r|\n|\r)");
 
     private String text;
     private Font font;
@@ -74,28 +74,28 @@ public class TextHandle extends CanvasObject {
     @Override
     public void drawImpl(Graphics2D g) {
         g.setFont(this.font);
-        int x = 0;
-        int y = 0;
+        int localX = 0;
+        int localY = 0;
         switch (this.margin) {
             case BOTTOM_LEFT:
-                x = this.x;
-                y = this.y;
+                localX = this.x;
+                localY = this.y;
                 break;     
             case CENTER:
                 int width = 0;
                 int lines = 0;
-                for (String line : pattern.split(this.text)) {
+                for (String line : NLINE_PATTERN.split(this.text)) {
                     width = Math.max(width, g.getFontMetrics().stringWidth(line));
                     lines++;
                 }
                 int height = g.getFontMetrics().getHeight() * lines;
-                x = this.x - width / 2;
-                y = this.y + height / 2 - g.getFontMetrics().getDescent();
+                localX = this.x - width / 2;
+                localY = this.y + height / 2 - g.getFontMetrics().getDescent();
         }
 
         int currentLine = 0;
-        for (String line : pattern.split(this.text)) {
-            g.drawString(line, x, y + currentLine * g.getFontMetrics().getHeight());
+        for (String line : NLINE_PATTERN.split(this.text)) {
+            g.drawString(line, localX, localY + currentLine * g.getFontMetrics().getHeight());
             currentLine++;
         }
     }

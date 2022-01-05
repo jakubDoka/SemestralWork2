@@ -22,9 +22,10 @@ public class Player extends CanvasObject {
      * middle of the screen.
      * @param size - size of the rectangle, it acts more like an radius of a square.
      */
-    public Player(int size) {
+    public Player(int size, double x, double y) {
+        size = size / 3 * 2;
         this.temp = new Vec();
-        this.position = new Vec(Directions.WIDTH / 2 - size, Directions.HEIGHT / 2 - size);
+        this.position = new Vec(x - size, y - size);
         this.drawer = new Rectangle(
             0, 
             0, 

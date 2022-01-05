@@ -18,38 +18,53 @@ public class Settings extends Panel {
     private static final int PLAYER = 0;
     private static final int PATH = 1;
     private static final int BACKGROUND = 2;
-
+    private static final int PREVIEW_WIDTH = 300;
+    
     private final Button back;
+    private final Button reset;
     private final Selection difficulty;
-    private final Panel colorPanel; 
     private final Selection colorSelection;
+    private final Panel controls;
+    private final Panel colors;
+    private final Panel preview;
     private final Scroll red;
     private final Scroll green;
     private final Scroll blue;
+    
+    private Player previewPlayer;
+    private Path previewPath;
 
     /**
      * Creates new settings screen. Initially hidden when added to canvas.
      */
     public Settings() {
         super(
+            new Rectangle(),
+            Color.BLACK
+        );
+
+        this.controls = new Panel(
             new Rectangle(
                 PADDING,
-                PADDING,
+                PADDING + PREVIEW_WIDTH,
                 Directions.WIDTH - PADDING * 2,
-                Directions.HEIGHT - PADDING * 2
+                Directions.HEIGHT - PADDING * 2 - PREVIEW_WIDTH
             ), 
             Directions.UI_COLOR
         );
 
+        // not actually visible, only for layering of preview
+        this.preview = new Panel(new Rectangle(), Color.BLACK);
+
         // Back button
-        final int backButtonHeight = 50;
+        final int buttonHeight = 40;
+        
         final Rectangle backButtonRect = new Rectangle(
             PADDING * 2,
-            Directions.HEIGHT - PADDING * 2 - backButtonHeight,
-            Directions.WIDTH - PADDING * 4,
-            backButtonHeight
+            Directions.HEIGHT - PADDING * 2 - buttonHeight,
+            Directions.WIDTH / 2 - PADDING / 2 * 5,
+            buttonHeight
         );
-
         this.back = new Button(
             Color.GRAY,
             Color.DARK_GRAY,
@@ -57,6 +72,21 @@ public class Settings extends Panel {
             Color.BLACK,
             "BACK",
             backButtonRect
+        );
+
+        final Rectangle resetButtonRect = new Rectangle(
+            Directions.WIDTH / 2 + PADDING / 2,
+            Directions.HEIGHT - PADDING * 2 - buttonHeight,
+            Directions.WIDTH / 2 - PADDING / 2 * 5,
+            buttonHeight
+        );
+        this.reset = new Button(
+            Color.GRAY,
+            Color.DARK_GRAY,
+            Fonts.BIG,
+            Color.BLACK,
+            "RESET",
+            resetButtonRect
         );
 
         // difficulty selection
@@ -73,10 +103,10 @@ public class Settings extends Panel {
             );
         }
 
-        final int difficultyHeight = 100;
+        final int difficultyHeight = 40;
         final Rectangle difficultyRect = new Rectangle(
             PADDING * 2,
-            PADDING * 2,
+            PADDING * 2 + PREVIEW_WIDTH,
             Directions.WIDTH - PADDING * 4,
             difficultyHeight
         );
@@ -90,11 +120,11 @@ public class Settings extends Panel {
         // panel with color picker
         final Rectangle colorPanelRect = new Rectangle(
             PADDING * 2,
-            PADDING * 3 + difficultyHeight,
+            PADDING * 3 + difficultyHeight + PREVIEW_WIDTH,
             Directions.WIDTH - PADDING * 4,
-            Directions.HEIGHT - PADDING * 6 - difficultyHeight - backButtonHeight
+            Directions.HEIGHT - PADDING * 6 - difficultyHeight - buttonHeight - PREVIEW_WIDTH
         );
-        this.colorPanel = new Panel(
+        this.colors = new Panel(
             colorPanelRect,
             Colors.create(0xFF666666)
         );
@@ -106,7 +136,7 @@ public class Settings extends Panel {
         final Color idle = Colors.create(0xFF555555);
         final Color selected = Colors.create(0xFFAAAAAA);
         
-        for(int i = 0; i < items.length; i++) {
+        for (int i = 0; i < items.length; i++) {
             items[i] = new Selection.Item(names[i], idle, selected);
         }
         
@@ -124,10 +154,10 @@ public class Settings extends Panel {
         this.colorSelection.setSelected(0);
 
         // the color picker scrolls
-        final Color[] colors = {Color.RED, Color.GREEN, Color.BLUE};
-        final Scroll[] scrolls = new Scroll[colors.length];
+        final Color[] localColors = {Color.RED, Color.GREEN, Color.BLUE};
+        final Scroll[] scrolls = new Scroll[localColors.length];
         final int scrollHeight = 
-            (colorPanelRect.height - PADDING * 5 - colorSelectionRect.height) / colors.length;
+            (colorPanelRect.height - PADDING * 5 - colorSelectionRect.height) / localColors.length;
 
         for (int i = 0; i < scrolls.length; i++) {
             scrolls[i] = new Scroll(
@@ -139,7 +169,7 @@ public class Settings extends Panel {
                     scrollHeight
                 ),
                 idle,
-                colors[i]
+                localColors[i]
             );
         }
 
@@ -147,14 +177,20 @@ public class Settings extends Panel {
         this.green = scrolls[1];
         this.blue = scrolls[2];
         
-        this.colorPanel.addItem(this.colorSelection);
-        this.colorPanel.addItem(this.red);
-        this.colorPanel.addItem(this.green);
-        this.colorPanel.addItem(this.blue);
-
-        this.addItem(this.difficulty);
-        this.addItem(this.colorPanel);
-        this.addItem(this.back);
+        
+        this.colors.addItem(this.colorSelection);
+        this.colors.addItem(this.red);
+        this.colors.addItem(this.green);
+        this.colors.addItem(this.blue);
+        
+        this.controls.addItem(this.difficulty);
+        this.controls.addItem(this.colors);
+        this.controls.addItem(this.back);
+        this.controls.addItem(this.reset);
+        
+        this.addItem(this.preview);
+        this.addItem(this.controls);
+        
 
         this.setVisible(false);
     }
@@ -179,7 +215,7 @@ public class Settings extends Panel {
 
         int newDifficulty = this.difficulty.changed(canvas);
         if (newDifficulty != -1) {
-            directions.setDifficulty(Difficulty.values()[newDifficulty]);;
+            directions.setDifficulty(Difficulty.values()[newDifficulty]);
         }
 
         int newColor = this.colorSelection.changed(canvas);
@@ -217,10 +253,14 @@ public class Settings extends Panel {
             
         }
 
+        // buttons
         if (this.back.pressed(canvas)) {
             directions.saveData();
             this.setVisible(false);
             directions.showMainMenu();
+        } else if (this.reset.pressed(canvas)) {
+            directions.resetData();
+            this.start(directions);
         }
     }
 
@@ -231,7 +271,6 @@ public class Settings extends Panel {
      */
     private void selectScrolls(int selected, Directions directions) {
         int color;
-            
         switch (selected) {
             case PLAYER:
                 color = directions.getPlayerColor();
@@ -243,16 +282,38 @@ public class Settings extends Panel {
                 color = directions.getBackgroundColor();
         }
 
-        int red = Colors.r(color);
-        int green = Colors.g(color);
-        int blue = Colors.b(color);
-
-        this.red.setValue(red / 255.0);
-        this.green.setValue(green / 255.0);
-        this.blue.setValue(blue / 255.0);
+        this.red.setValue(Colors.r(color) / 255.0);
+        this.green.setValue(Colors.g(color) / 255.0);
+        this.blue.setValue(Colors.b(color) / 255.0);
     }
 
-    public void setDifficulty(Difficulty difficulty) {
-        this.difficulty.setSelected(difficulty.ordinal());
+    public void setDifficulty(Directions directions) {
+        Difficulty localDifficulty = directions.getDifficulty();
+
+        this.difficulty.setSelected(localDifficulty.ordinal());
+        
+        this.preview.removeItem(this.previewPath);
+        this.preview.removeItem(this.previewPlayer);
+        
+        this.previewPath = new Path(localDifficulty.getPathLength(), localDifficulty.getPathSize(), Directions.WIDTH / 2, PREVIEW_WIDTH / 2);
+        this.previewPlayer = new Player(localDifficulty.getPathSize(), Directions.WIDTH / 2, PREVIEW_WIDTH / 2);
+        
+        this.preview.addItem(this.previewPath);
+        this.preview.addItem(this.previewPlayer);
+
+        this.previewPath.setColor(Colors.create(directions.getPathColor()));
+        this.previewPlayer.setColor(Colors.create(directions.getPlayerColor()));
+
+        for (int i = 0; i < localDifficulty.getPathLength() - 1; i++) {
+            this.previewPath.expand();
+        }
+    }
+
+    public void setPlayerColor(Color color) {
+        this.previewPlayer.setColor(color);
+    }
+
+    public void setPathColor(Color color) {
+        this.previewPath.setColor(color);
     }
 }

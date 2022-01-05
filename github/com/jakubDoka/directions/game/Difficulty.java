@@ -6,15 +6,15 @@ package github.com.jakubDoka.directions.game;
  */
 public enum Difficulty {
     EASY(10, 10),
-    MEDIUM(40, 6),
-    HARD(100, 4);
+    MEDIUM(20, 6),
+    HARD(40, 4);
 
     
     private int pathLength;
     private int pathSize;
     
 
-    private Difficulty(int pathLength, int pathSize) {
+    Difficulty(int pathLength, int pathSize) {
         this.pathLength = pathLength;
         this.pathSize = pathSize;
     }

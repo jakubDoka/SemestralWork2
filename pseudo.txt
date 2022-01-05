@@ -1,0 +1,37 @@
+function recursive_split_sort(list)
+    right, left = split list in half
+    recursive_split_sort(right)
+    recursive_split_sort(left)
+    clear list
+    while a or b has elements
+        if right is not empty and (left is empty or right[0] < left[0])
+            push right[0] to list
+            remove right[0]
+        else
+            push left[0] to list
+            remove left[0]
+
+function iterative_split_sort(list)
+    original = id of list
+    temp = 'list' with size of list
+    stride = 2
+    while stride / 2 > length of list
+        for each index from 0 to length of list with step of stride
+            left = index
+            right = index + stride / 2
+            if right < length of list
+                i, j, k = 0
+                while i + j < stride
+                    if i < stride / 2 and (j == stride / 2 or list[i] < list[j])
+                        temp[k + left] = list[left + i]
+                        increase i
+                    else
+                        temp[k + left] = list[right + j]
+                        increase j
+                    increase k
+        double the stride
+        swap list with temp
+    if id of list != original
+        copy list to original
+
+        

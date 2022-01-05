@@ -29,6 +29,10 @@ public class Panel extends CanvasObject {
         this.items.add(item);
     }
 
+    public void removeItem(CanvasObject item) {
+        this.items.remove(item);
+    }
+
     @Override
     public void drawImpl(Graphics2D g) {
         g.setColor(this.color);

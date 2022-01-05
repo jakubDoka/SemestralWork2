@@ -7,8 +7,8 @@ import java.awt.Color;
  * and only materializing them when needed to reduce gc overhead.
  */
 public class Colors {
-    private static final HashMap<ColorID, Color> storage = new HashMap<>(1024);
-    private static final ColorID access = new ColorID(0);
+    private static final HashMap<ColorID, Color> STORAGE = new HashMap<>(1024);
+    private static final ColorID ACCESS = new ColorID(0);
 
     /**
      * Returns a color of the given value from pool if possible.
@@ -16,12 +16,12 @@ public class Colors {
      * @return
      */
     public static Color create(int value) {
-        access.setValue(value);
-        Color color = storage.get(access);
+        ACCESS.setValue(value);
+        Color color = STORAGE.get(ACCESS);
 
         if (color == null) {
             color = new Color(value, true);
-            storage.put(new ColorID(value), color);
+            STORAGE.put(new ColorID(value), color);
         }
 
         return color;
@@ -104,13 +104,13 @@ public class Colors {
      * we lookup color. That would defeat whole purpose of color storage.
      */
     private static class ColorID {
-        int value;
+        private int value;
 
-        public ColorID(int value) {
+        ColorID(int value) {
             this.value = value;
         }
 
-        public void setValue(int value) {
+        void setValue(int value) {
             this.value = value;
         }
 

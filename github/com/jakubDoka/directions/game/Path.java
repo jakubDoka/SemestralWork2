@@ -19,7 +19,7 @@ public class Path extends CanvasObject {
     private final Vec temp;
     private final Vec temp2;
     private final Segment[] segments;
-    private final Vec[] sort_temp;
+    private final Vec[] sortTemp;
     private int current;
     private final int size;
     private final double[] possibilities;
@@ -38,12 +38,12 @@ public class Path extends CanvasObject {
         this.temp = new Vec();
         this.temp2 = new Vec();
         this.segments = new Segment[length];
-        for(int i = 0; i < length; i++) {
+        for (int i = 0; i < length; i++) {
             this.segments[i] = new Segment(new Vec(x, y));
         }
-        this.sort_temp = new Vec[length];
-        for(int i = 0; i < length; i++) {
-            this.sort_temp[i] = new Vec();
+        this.sortTemp = new Vec[length];
+        for (int i = 0; i < length; i++) {
+            this.sortTemp[i] = new Vec();
         }
         this.current = length - 1;
         this.size = size;
@@ -55,7 +55,7 @@ public class Path extends CanvasObject {
      */
     public void makeLastFirst() {
         Segment last = this.segments[0];
-        for(int i = 1; i < this.segments.length; i++) {
+        for (int i = 1; i < this.segments.length; i++) {
             this.segments[i - 1] = this.segments[i];
         }
         this.segments[this.segments.length - 1] = last;
@@ -69,7 +69,7 @@ public class Path extends CanvasObject {
      */
     public void shift(double x, double y) {
         this.temp.set(x, y);
-        for(Segment segment : this.segments) {
+        for (Segment segment : this.segments) {
             segment.setPos(segment.getPos(this.temp2).add(this.temp));
         }
     }
@@ -82,9 +82,9 @@ public class Path extends CanvasObject {
      * @return - is move was successful
      */
     public Vec move(Direction direction) {
-        Segment current = this.segments[this.current];
+        Segment localCurrent = this.segments[this.current];
 
-        if (current.getDirection() != direction) {
+        if (localCurrent.getDirection() != direction) {
             return null;
         }
         
@@ -92,7 +92,7 @@ public class Path extends CanvasObject {
         
         this.expand();
 
-        Vec shift = current.getPos(this.temp2).sub(this.segments[this.current].getPos(this.temp));
+        Vec shift = localCurrent.getPos(this.temp2).sub(this.segments[this.current].getPos(this.temp));
         
         return shift;
     }
@@ -102,15 +102,15 @@ public class Path extends CanvasObject {
      * always colinear to current direction.
      */
     public void expand() {
-        Direction direction = this.segments[this.segments.length - 2].getDirection();;
-        Segment current = this.segments[this.segments.length - 1];
+        Direction direction = this.segments[this.segments.length - 2].getDirection();
+        Segment localCurrent = this.segments[this.segments.length - 1];
         
         Vec currentPos = this.segments[this.segments.length - 1].getPos(this.temp);
 
         this.segments[0].setPos(currentPos);
         Vec step = this.getStep(direction, currentPos);
-        Direction next_direction = Direction.of(step);
-        current.setDirection(next_direction);
+        Direction nextDirection = Direction.of(step);
+        localCurrent.setDirection(nextDirection);
         this.segments[0].shift(step);
         this.makeLastFirst();
 
@@ -127,39 +127,39 @@ public class Path extends CanvasObject {
     public Vec getStep(Direction direction, Vec currentPos) {
         // creating the vector mapping
         for (int i = 0; i < this.segments.length; i++) {
-            this.segments[i].getPos(this.sort_temp[i]);
+            this.segments[i].getPos(this.sortTemp[i]);
         }
 
         boolean horizontal = direction.horizontal();        
         
-        double current; 
+        double localCurrent; 
         if (horizontal) {
-            current = currentPos.getY();
-            Util.sort(this.sort_temp, (a, b) -> a.getY() > b.getY());
+            localCurrent = currentPos.getY();
+            Util.sort(this.sortTemp, (a, b) -> a.getY() > b.getY());
         } else {
-            current = currentPos.getX();
-            Util.sort(this.sort_temp, (a, b) -> a.getX() > b.getX());
+            localCurrent = currentPos.getX();
+            Util.sort(this.sortTemp, (a, b) -> a.getX() > b.getX());
         }
 
         // finding best gap
         int found = 0;
-        for (int i = 1; i < this.sort_temp.length; i++) {
+        for (int i = 1; i < this.sortTemp.length; i++) {
             double a;
             double b;
             if (horizontal) {
-                a = this.sort_temp[i].getY();
+                a = this.sortTemp[i].getY();
 
-                b = this.sort_temp[i - 1].getY();
+                b = this.sortTemp[i - 1].getY();
             } else {
-                a = this.sort_temp[i].getX();
-                b = this.sort_temp[i - 1].getX();
+                a = this.sortTemp[i].getX();
+                b = this.sortTemp[i - 1].getX();
             }
             
             if (Math.abs(a - b) < this.size * 4) {
                 continue;
             }
             
-            double mid = (a + b) / 2 - current;
+            double mid = (a + b) / 2 - localCurrent;
             
             if (Math.abs(mid) > this.size * 4) {
                 this.possibilities[found + 2] = mid;
@@ -172,15 +172,15 @@ public class Path extends CanvasObject {
         double first;
 
         if (horizontal) {
-            first = this.sort_temp[0].getY();
-            last = this.sort_temp[this.sort_temp.length - 1].getY();
+            first = this.sortTemp[0].getY();
+            last = this.sortTemp[this.sortTemp.length - 1].getY();
         } else {
-            first = this.sort_temp[0].getX();
-            last = this.sort_temp[this.sort_temp.length - 1].getX();
+            first = this.sortTemp[0].getX();
+            last = this.sortTemp[this.sortTemp.length - 1].getX();
         }
 
-        first -= current;
-        last -= current;
+        first -= localCurrent;
+        last -= localCurrent;
 
         int spacing = this.size * 6;
 
@@ -200,18 +200,18 @@ public class Path extends CanvasObject {
         this.possibilities[1] = last;
 
         int pick;
-        if(found == 0) {
+        if (found == 0) {
             pick = this.random.nextInt(2);
         } else {
             pick = 2 + this.random.nextInt(found);
         }
 
-        double final_step = this.possibilities[pick];
+        double finalStep = this.possibilities[pick];
 
         if (horizontal) {
-            return this.temp.set(0, final_step);
+            return this.temp.set(0, finalStep);
         } else { 
-            return this.temp.set(final_step, 0);
+            return this.temp.set(finalStep, 0);
         }
     }
 
@@ -220,9 +220,6 @@ public class Path extends CanvasObject {
      */
     @Override
     public void drawImpl(Graphics2D g) {
-        
-
-        
         // connect segment connections
         for (int i = 0; i < this.segments.length - 1; i++) {
             Segment a = this.segments[i];
@@ -277,7 +274,7 @@ public class Path extends CanvasObject {
     public void restart() {
         this.current = this.segments.length - 1;
         this.temp.set(0, 0);
-        for(Segment segment : this.segments) {
+        for (Segment segment : this.segments) {
             segment.setPos(this.temp);
         }
     }
@@ -286,8 +283,8 @@ public class Path extends CanvasObject {
      * Returns the correct direction player should move.
      */
     public Direction getCorrectDirection() {
-		return this.segments[this.current].getDirection();
-	}
+        return this.segments[this.current].getDirection();
+    }
 
     /**
      * Segment glues up information to be stored in array.
@@ -298,8 +295,8 @@ public class Path extends CanvasObject {
         private Direction direction;
         private int color;
         
-        public void setDirection(Path.Direction next_dir) {
-            this.direction = next_dir;
+        public void setDirection(Path.Direction direction) {
+            this.direction = direction;
         }
 
         public void setColor(Color color) {
@@ -381,5 +378,5 @@ public class Path extends CanvasObject {
         public boolean horizontal() {
             return this.ordinal() % 2 == 1;
         }
-    }	
+    }    
 }

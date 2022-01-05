@@ -54,17 +54,17 @@ public class Button extends CanvasObject {
      * @return - true if press event happened
      */
     public boolean pressed(Canvas canvas) {
-        Point mouse = canvas.getMousePos(this.mouse);
+        Point localMouse = canvas.getMousePos(this.mouse);
 
         this.isPressed = this.isPressed || (
-            this.bounds.contains(mouse) && 
+            this.bounds.contains(localMouse) && 
             canvas.isMousePressed(MouseEvent.BUTTON1)
-        );
+            );
 
         if (this.isPressed) {
             if (!canvas.isMousePressed(MouseEvent.BUTTON1)) {                    
                 this.isPressed = false;
-                return this.bounds.contains(mouse);
+                return this.bounds.contains(localMouse);
             }
             return false;
         }

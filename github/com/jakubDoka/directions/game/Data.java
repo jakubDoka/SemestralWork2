@@ -15,12 +15,12 @@ public class Data {
     private static final String FILE = Paths.get(
         System.getenv("LOCALAPPDATA"), "directions", "data.txt").toString();
 
-    int bestScore;
-    Difficulty difficulty;
+    private int bestScore;
+    private Difficulty difficulty;
     
-    int backgroundColor;
-    int pathColor;
-    int playerColor;
+    private int backgroundColor;
+    private int pathColor;
+    private int playerColor;
     
     /**
      * Constructs data with default settings.

@@ -82,7 +82,7 @@ public class GamePlay extends Panel {
 
         this.frameManager.setDelta(1);
         
-        if (isTutorial) {
+        if (this.isTutorial) {
             this.tutorialHint.setText(
                 "Goal of the game is to get to Green square.\n" + 
                 "You have to move as fast as possible to get\n" + 
@@ -96,7 +96,7 @@ public class GamePlay extends Panel {
             this.score = 0;
         }
 
-        this.player = new Player(difficulty.getPathSize() / 3 * 2);
+        this.player = new Player(difficulty.getPathSize(), Directions.WIDTH / 2, Directions.HEIGHT / 2);
         this.player.setColor(playerColor);
         this.path = new Path(
             difficulty.getPathLength(), 
@@ -132,21 +132,21 @@ public class GamePlay extends Panel {
         }
 
         if (shift == null) {
-            if (isTutorial) {
+            if (this.isTutorial) {
                 this.tutorialHint.setText("press " + this.path.getCorrectDirection() + " key");
             } else {
                 this.setVisible(false);
                 directions.showScore(this.score);
             }
         } else if (moved) {
-            if (isTutorial) {
+            if (this.isTutorial) {
                 this.tutorialHint.setText("");
             } else {
                 // faster you move more score you get per move, difficulty also multiplies 
                 // the score.
                 double delta = this.frameManager.getDelta();
 
-                int addition = (int)((1 - Math.min(Math.pow(delta, 1/30.0), 1)) * 1000) * 
+                int addition = (int)((1 - Math.min(Math.pow(delta, 1 / 30.0), 1)) * 1000) * 
                     (directions.getDifficulty().ordinal() + 1);
     
                 this.score += addition;
@@ -160,10 +160,10 @@ public class GamePlay extends Panel {
         }
 
         if (this.end.pressed(canvas)) {
-            if (isTutorial) {
+            if (this.isTutorial) {
                 directions.showMainMenu();
             } else {
-                directions.showScore(score);
+                directions.showScore(this.score);
             }
             this.setVisible(false);
         }
