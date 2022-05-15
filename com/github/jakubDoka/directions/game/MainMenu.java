@@ -1,12 +1,12 @@
-package github.com.jakubDoka.directions.game;
+package com.github.jakubDoka.directions.game;
 
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.Graphics2D;
 
-import github.com.jakubDoka.directions.ui.Button;
-import github.com.jakubDoka.directions.ui.Canvas;
-import github.com.jakubDoka.directions.ui.Panel;
+import com.github.jakubDoka.directions.ui.Button;
+import com.github.jakubDoka.directions.ui.Canvas;
+import com.github.jakubDoka.directions.ui.Panel;
 
 /**
  * Main menu is the initial screen of the game. It appears the moment it is 

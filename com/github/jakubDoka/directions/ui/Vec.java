@@ -1,4 +1,4 @@
-package github.com.jakubDoka.directions.ui;
+package com.github.jakubDoka.directions.ui;
 
 /**
  * Vec is a simple vector class that is used to store

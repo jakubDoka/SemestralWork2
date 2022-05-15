@@ -1,9 +1,9 @@
-package github.com.jakubDoka.directions.game;
+package com.github.jakubDoka.directions.game;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
-import github.com.jakubDoka.directions.ui.CanvasObject;
-import github.com.jakubDoka.directions.ui.Vec;
+import com.github.jakubDoka.directions.ui.CanvasObject;
+import com.github.jakubDoka.directions.ui.Vec;
 
 /**
  * Player is merely draws it self on the screen.

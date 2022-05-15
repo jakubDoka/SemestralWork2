@@ -1,10 +1,10 @@
-package github.com.jakubDoka.directions.game;
+package com.github.jakubDoka.directions.game;
 
 import java.awt.Color;
 
-import github.com.jakubDoka.directions.ui.Canvas;
-import github.com.jakubDoka.directions.ui.Colors;
-import github.com.jakubDoka.directions.ui.FrameManager;
+import com.github.jakubDoka.directions.ui.Canvas;
+import com.github.jakubDoka.directions.ui.Colors;
+import com.github.jakubDoka.directions.ui.FrameManager;
 
 /**
  * Directions is a main game object that handles all the game logic.

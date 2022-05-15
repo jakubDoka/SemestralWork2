@@ -1,4 +1,4 @@
-package github.com.jakubDoka.directions.ui;
+package com.github.jakubDoka.directions.ui;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.regex.Pattern;

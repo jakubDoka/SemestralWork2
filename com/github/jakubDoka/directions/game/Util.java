@@ -1,4 +1,4 @@
-package github.com.jakubDoka.directions.game;
+package com.github.jakubDoka.directions.game;
 import java.lang.reflect.Array;
 
 /**

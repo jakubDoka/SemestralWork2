@@ -1,4 +1,4 @@
-package github.com.jakubDoka.directions.ui;
+package com.github.jakubDoka.directions.ui;
 import java.util.ArrayList;
 import java.util.Iterator;
 

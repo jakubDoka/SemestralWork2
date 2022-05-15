@@ -1,4 +1,4 @@
-package github.com.jakubDoka.directions.ui;
+package com.github.jakubDoka.directions.ui;
 
 import javax.swing.JFrame;
 import javax.swing.event.MouseInputListener;

@@ -1,14 +1,14 @@
-package github.com.jakubDoka.directions.game;
+package com.github.jakubDoka.directions.game;
 
 import java.awt.Color;
 import java.awt.Rectangle;
 
-import github.com.jakubDoka.directions.ui.Button;
-import github.com.jakubDoka.directions.ui.Canvas;
-import github.com.jakubDoka.directions.ui.Colors;
-import github.com.jakubDoka.directions.ui.Panel;
-import github.com.jakubDoka.directions.ui.Scroll;
-import github.com.jakubDoka.directions.ui.Selection;
+import com.github.jakubDoka.directions.ui.Button;
+import com.github.jakubDoka.directions.ui.Canvas;
+import com.github.jakubDoka.directions.ui.Colors;
+import com.github.jakubDoka.directions.ui.Panel;
+import com.github.jakubDoka.directions.ui.Scroll;
+import com.github.jakubDoka.directions.ui.Selection;
 
 /**
  * Manages state of game settings screen.

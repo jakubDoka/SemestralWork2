@@ -1,4 +1,4 @@
-package github.com.jakubDoka.directions.game;
+package com.github.jakubDoka.directions.game;
 
 /**
  * Difficulty stores some constant data that GamePlay uses to alter 

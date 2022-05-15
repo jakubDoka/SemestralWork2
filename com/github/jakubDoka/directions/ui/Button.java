@@ -1,4 +1,4 @@
-package github.com.jakubDoka.directions.ui;
+package com.github.jakubDoka.directions.ui;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -7,7 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
-import github.com.jakubDoka.directions.ui.TextHandle.Margin;
+import com.github.jakubDoka.directions.ui.TextHandle.Margin;
 
 /**
  * Button is basic ui element with some text and solid color bounding box.

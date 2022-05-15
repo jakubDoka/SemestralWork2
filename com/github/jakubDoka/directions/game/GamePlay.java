@@ -1,16 +1,16 @@
-package github.com.jakubDoka.directions.game;
+package com.github.jakubDoka.directions.game;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
-import github.com.jakubDoka.directions.ui.Button;
-import github.com.jakubDoka.directions.ui.Canvas;
-import github.com.jakubDoka.directions.ui.FrameManager;
-import github.com.jakubDoka.directions.ui.Panel;
-import github.com.jakubDoka.directions.ui.TextHandle;
-import github.com.jakubDoka.directions.ui.Vec;
+import com.github.jakubDoka.directions.ui.Button;
+import com.github.jakubDoka.directions.ui.Canvas;
+import com.github.jakubDoka.directions.ui.FrameManager;
+import com.github.jakubDoka.directions.ui.Panel;
+import com.github.jakubDoka.directions.ui.TextHandle;
+import com.github.jakubDoka.directions.ui.Vec;
 
 /**
  * GamePlay manages the game state when player is actually playing the game.
