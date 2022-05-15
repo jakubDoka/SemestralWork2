@@ -26,6 +26,9 @@ public class Directions implements Runnable {
     private FrameManager frameManager;
     private State state;
 
+    /**
+     * Constructs the Directions object but does not run the game loop.
+     */
     public Directions() {
         this.mainMenu = new MainMenu();
         this.gamePlay = new GamePlay();
@@ -46,6 +49,9 @@ public class Directions implements Runnable {
         this.state = State.MAIN_MENU;
     }
 
+    /**
+     * Runs the game loop.
+     */
     @Override
     public void run() {
         while (true) {

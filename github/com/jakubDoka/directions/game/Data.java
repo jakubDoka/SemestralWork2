@@ -38,6 +38,11 @@ public class Data {
         return this.bestScore;
     }
 
+    /**
+     * Sets the best score, only if bestScore is higher then current value.
+     * Also saves.
+     * @param bestScore - used if higher then current bestScore
+     */
     public void setBestScore(int bestScore) {
         if (bestScore > this.bestScore) {
             this.bestScore = bestScore;

@@ -3,6 +3,9 @@ import java.util.Random;
 
 import github.com.jakubDoka.directions.game.Util;
 
+/**
+ * Unit test class.
+ */
 public class Tests {
 
     /**

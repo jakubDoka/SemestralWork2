@@ -12,7 +12,7 @@ function recursive_split_sort(list)
             remove left[0]
 
 function iterative_split_sort(list)
-    original = id of list
+    original = list
     temp = 'list' with size of list
     stride = 2
     while stride / 2 > length of list
@@ -31,7 +31,7 @@ function iterative_split_sort(list)
                     increase k
         double the stride
         swap list with temp
-    if id of list != original
+    if list != original
         copy list to original
 
         

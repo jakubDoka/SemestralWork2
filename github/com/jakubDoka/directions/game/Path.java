@@ -215,9 +215,6 @@ public class Path extends CanvasObject {
         }
     }
 
-    /**
-     * Draws the path.
-     */
     @Override
     public void drawImpl(Graphics2D g) {
         // connect segment connections
